@@ -1,25 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+ import React, { useState } from 'react'
+ import { createContext } from 'react';
+import Navbar from './Navbar';
+import { Routes,Route } from 'react-router-dom';
+import Home from './Home';
+import Contact from './Contact';
+import About from './About';
+
+
+ const GlobalData=createContext();
+
 
 function App() {
+  const[light,dark]=useState(false);
+  const[msg,SetMsg]=useState("")
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+   <GlobalData.Provider value={{light,dark,msg,SetMsg}}>
+
+    <div style={{background:light===false?"white":"black",color:light===false?"black":"white"}} className="App">
+
+    <Navbar/>
+    <div style={{margin:'1rem',textAlign:'center'}}>{msg}</div>
+   <Routes>
+    <Route path='/' element={<Home/>}/>
+    <Route path='/home' element={<Home/>}/>
+    <Route path='/about' element={<About/>}/>
+    <Route path='/contact' element={<Contact/>}/>
+   </Routes>
+
     </div>
+
+    </GlobalData.Provider>
+    </>
   );
 }
 
 export default App;
+export {GlobalData};
